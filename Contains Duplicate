@@ -1,0 +1,16 @@
+#include <unordered_set>
+using namespace std;
+
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        if (nums.empty()){return false;}
+        unordered_map<int,int> seen;
+        for (int i : nums){
+            if (++seen[i] > 1){
+                return true;
+            }
+        }
+        return false;
+    }
+};
