@@ -1,0 +1,24 @@
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int videoStitching(vector<vector<int>>& clips, int time) {
+        sort(clips.begin(), clips.end()); 
+        vector<int> dp(time + 1, 100); 
+        dp[0] = 0;
+        
+        for (const auto& clip : clips) {
+            int start = clip[0], end = clip[1];
+            if (start >= time) break; 
+            if (dp[start] == INT_MAX) continue; 
+            for (int i = start + 1; i <= min(end, time); ++i) {
+                dp[i] = min(dp[i], dp[start] + 1); 
+            }
+        }
+        
+        return dp[time] == 100 ? -1 : dp[time]; 
+    }
+};
