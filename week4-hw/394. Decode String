@@ -1,0 +1,24 @@
+class Solution:
+    def decodeString(self, s: str) -> str:
+        stack = []  # Stack to hold (current string, k) tuples
+        current_string = ""
+        k = 0
+        
+        for char in s:
+            if char.isdigit():
+                k = k * 10 + int(char)  # Handle multi-digit numbers
+            elif char == '[':
+                # Push the current context onto the stack
+                stack.append((current_string, k))
+                # Reset for the next encoded string
+                current_string, k = "", 0
+            elif char == ']':
+                # Pop the last context
+                prev_string, current_k = stack.pop()
+                # Decode the current segment
+                current_string = prev_string + current_string * current_k
+            else:
+                # Append the current character to the current string segment
+                current_string += char
+        
+        return current_string
