@@ -1,0 +1,24 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        result = []
+        queue = deque([(root, 0)])  # Initialize queue with root and its level
+
+        while queue:
+            current_node, level = queue.popleft()
+
+            # Check if we're at the start of a new level
+            if level == len(result):
+                result.append(current_node.val)
+            else:
+                result[level] = current_node.val  # Update the last seen node's value at this level
+
+            # Add child nodes of the current node in the queue
+            if current_node.left:
+                queue.append((current_node.left, level + 1))
+            if current_node.right:
+                queue.append((current_node.right, level + 1))
+
+        return result
