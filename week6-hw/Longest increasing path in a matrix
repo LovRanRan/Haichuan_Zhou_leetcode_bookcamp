@@ -1,0 +1,28 @@
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        rows, cols = len(matrix), len(matrix[0])
+        # Memoization table to store the length of the longest path starting from each cell
+        dp = [[-1] * cols for _ in range(rows)]
+        
+        def dfs(r, c):
+            # Return the value if already computed
+            if dp[r][c] != -1:
+                return dp[r][c]
+            
+            # Directions: right, left, down, up
+            directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            max_path = 1  # Minimum path length is 1 (the cell itself)
+            
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] > matrix[r][c]:
+                    max_path = max(max_path, 1 + dfs(nr, nc))
+            
+            dp[r][c] = max_path
+            return max_path
+        
+        # Calculate the longest path starting from each cell and return the maximum
+        return max(dfs(r, c) for r in range(rows) for c in range(cols))
