@@ -1,0 +1,24 @@
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # This will store the order of nodes visited
+        self.count = 0
+        self.result = None
+
+        def inorder(node):
+            if not node or self.count >= k:
+                return
+            
+            # Traverse left subtree
+            inorder(node.left)
+            
+            # Visit the node
+            self.count += 1
+            if self.count == k:
+                self.result = node.val
+                return
+            
+            # Traverse right subtree
+            inorder(node.right)
+        
+        inorder(root)
+        return self.result
